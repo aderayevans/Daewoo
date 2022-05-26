@@ -6,9 +6,11 @@
 class HandleFile
 {
 public:
-    template <>
-    void read_file(std::string);
-    void write_file(std::string);
+    template <class OBJECTFILE>
+    OBJECTFILE read_file(std::string);
+    
+    template <class OBJECTFILE>
+    void write_file(std::string, OBJECTFILE);
 private:
 
 };

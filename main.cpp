@@ -8,7 +8,6 @@
 #include "bus.h"
 #include "passenger.h"
 
-const std::string FILENAME = "database";
 
 enum menuChoice
 {
@@ -53,7 +52,13 @@ void cancel_res();
 void searchByName();
 void searchByDate();
 
+
+const std::string BUS_DATABASE = "bus_database";
+const std::string RES_DATABASE = "res_database";
+
+Bus bus;
 std::vector<Reservation> reservations;
+
 
 int main()
 {
@@ -90,6 +95,10 @@ void start()
     std::string menuInput;
 
     printMenu();
+
+    bus = Bus();
+    bus.init();
+    // bus.load_from_file(BUS_DATABASE);
 
     while (true)
     {
@@ -130,11 +139,10 @@ void make_res()
 {
     Passenger passenger = Passenger();
     passenger.init();
-    Bus bus = Bus();
-    bus.init();
-    bus.load_from_file("database_bus");
     Reservation reservation = Reservation(&bus, &passenger);
     reservations.push_back(reservation);
+
+    bus.print();
 }
 
 void modify_res()

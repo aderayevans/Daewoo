@@ -7,10 +7,10 @@ class HandleFile
 {
 public:
     template <class OBJECTFILE>
-    OBJECTFILE read_file(std::string);
+    static OBJECTFILE read_file(std::string);
     
     template <class OBJECTFILE>
-    void write_file(std::string, OBJECTFILE);
+    static void write_file(std::string, OBJECTFILE);
 private:
 
 };

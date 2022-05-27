@@ -14,6 +14,10 @@ OBJECTFILE HandleFile::read_file(std::string filename)
     OBJECTFILE obj;
 
     ifs.read((char*)&obj, sizeof(obj));
+    
+    while (!ifs.eof()) {
+        ifs.read((char*)&obj, sizeof(obj));
+    }
     return obj;
 }
     

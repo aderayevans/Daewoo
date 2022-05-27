@@ -7,6 +7,7 @@
 #include "reservation.h"
 #include "bus.h"
 #include "passenger.h"
+#include "handlefile.cpp"
 
 
 enum menuChoice
@@ -98,7 +99,14 @@ void start()
 
     bus = Bus();
     bus.init();
-    // bus.load_from_file(BUS_DATABASE);
+    
+    bus.print();
+    HandleFile::write_file<Bus>(BUS_DATABASE, bus);
+    
+    Bus bus2 = HandleFile::read_file<Bus>(BUS_DATABASE);
+
+    bus2.print();
+    
 
     while (true)
     {

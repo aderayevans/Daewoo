@@ -192,7 +192,6 @@ void modify_res()
     for (auto i = reservations.begin(); i != reservations.end(); ++i) {
         if ((*i).passenger.name == the_name) {
             process_modify(*i);
-            (*i).print();
 
             break;
         }
@@ -311,6 +310,7 @@ void process_modify(Reservation &res)
                 printMenu_modify();
                 break;
         }
+        res.print();
     }
     goBackPoint:
     
@@ -337,6 +337,7 @@ syntax: -[Function]
 void modify_passenger(Reservation &res)
 {
     res.passenger.init(false);
+    std::cout << "Modify passenger succeeded" << std::endl;
 }
 
 void modify_ticket(Reservation &res)
@@ -362,4 +363,6 @@ void modify_ticket(Reservation &res)
         }
     }
     res.set_tickets(seat_indices);
+
+    std::cout << "Modify ticket succeeded" << std::endl;
 }

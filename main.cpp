@@ -204,12 +204,23 @@ void cancel_res()
     std::cout << "Passenger name? ";
     std::cin >> the_name;
 
-    for (auto i = reservations.begin(); i != reservations.end(); ++i) {
-        if ((*i).passenger.name == the_name) {
-            reservations.erase(i);
+
+    for (int i = 0; i < reservations.size(); ++i) {
+        if (reservations[i].passenger.name == the_name) {
+            for (auto ticket:reservations[i].tickets)
+                bus.un_get_seat(ticket.get_seat());
+                
+            reservations.erase(reservations.begin() + i);
+            
+            // reservations.erase(std::next(i));
             break;
         }
     }
+
+    bus.print();
+    for (auto res:reservations)
+        res.print();
+
 }
 
 void searchByName()
@@ -244,6 +255,7 @@ void read_file()
     reservations = HandleFile::read_file_multiple_obj<Reservation>(RES_DATABASE);
 
     bus.print();
+    std::cout << reservations.size() << std::endl;
     for (auto res:reservations)
     {
         res.print();
@@ -352,9 +364,9 @@ void modify_ticket(Reservation &res)
         std::cout << "Seat index: ";
         std::cin >> seat_index;
         
-        if (bus.check_seat(seat_index))
+        if (bus.check_seat(seat_index-1))
         {
-            Seat seat = bus.get_seat(seat_index);
+            Seat seat = bus.get_seat(seat_index-1);
             seat_indices.push_back(seat.getIndex());
         }
         else

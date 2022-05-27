@@ -35,8 +35,10 @@ std::vector<OBJECTFILE> HandleFile::read_file_multiple_obj(std::string filename)
     OBJECTFILE obj;
     while (ifs >> obj)
     {
+        obj.print();
         objs.push_back(obj);
     }
+    std::cout << objs.size() << std::endl;
     ifs.close();
     std::cout << "Read file succeeded!!!" << std::endl;
     return objs;

@@ -27,3 +27,21 @@ void Time::print()
 {
     std::cout << hour << ":" << minute << std::endl; 
 }
+
+std::istream& operator>>(std::istream& is, Time& entry)
+{
+    is >> entry.hour;
+    is >> entry.minute;
+
+    return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const Time& entry)
+{
+    os << entry.hour;
+    os << " ";
+    os << entry.minute;
+    // os << " ";
+    
+    return os;
+}

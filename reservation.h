@@ -2,23 +2,25 @@
 #define RESERVATION_H
 
 #include "ticket.h"
-#include "bus.h"
 #include "passenger.h"
+#include <vector>
 
 class Reservation
 {
 public:
     Reservation();
+    Reservation(Passenger);
+    void printMenu();
+    void modify();
 
-    Reservation(Bus*, Passenger*);
-
-    void reserve_ticket();
-
+    void set_tickets(std::vector<int> seat_indices);
     void print();
 
-private:
-    Bus *bus;
-    Passenger *passenger;
+// private:
+    Passenger passenger;
     std::vector<Ticket> tickets;
 };
+
+std::istream& operator>>(std::istream& is, Reservation& entry);
+std::ostream& operator<<(std::ostream& os, const Reservation& entry);
 #endif

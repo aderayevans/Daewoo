@@ -4,6 +4,7 @@
 #include "seat.h"
 #include <vector>
 #include <string>
+#include <fstream>
 
 class Bus
 {
@@ -14,20 +15,25 @@ public:
 
     void init();
 
-    void load_from_file(std::string);
-
     bool is_available();
+
+    bool check_seat(int seat);
 
     Seat get_seat();
 
     Seat get_seat(int seat);
 
+    void un_get_seat(int seat);
+
     void print();
 
-private:
+// private:
     int seat_num;
     int non_taken_seat_num;
     std::vector<Seat> seats;
 };
+
+std::istream& operator>>(std::istream& is, Bus& entry);
+std::ostream& operator<<(std::ostream& os, const Bus& entry);
 
 #endif

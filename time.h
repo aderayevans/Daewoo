@@ -12,4 +12,6 @@ struct Time
     int hour;
     int minute;
 };
+std::istream& operator>>(std::istream& is, Time& entry);
+std::ostream& operator<<(std::ostream& os, const Time& entry);
 #endif

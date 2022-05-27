@@ -5,13 +5,17 @@ struct Date
 {
     Date();
     Date(int, int, int);
-    void fix_date();
+    bool operator == (Date& A) const;
+    void input();
+    void fix_day();
     void fix_month();
     void print();
     
 
-    int date;
+    int day;
     int month;
     int year;
 };
+std::istream& operator>>(std::istream& is, Date& entry);
+std::ostream& operator<<(std::ostream& os, const Date& entry);
 #endif

@@ -10,12 +10,9 @@
 class Passenger
 {
 public:
-    // Passenger();
-    // void print();
-
     Passenger();
 
-    void init();
+    void init(bool change__number_of_tickets=true);
 
     void print();
 
@@ -26,5 +23,7 @@ public:
     Time time_of_travel;
     int number_of_tickets;
 };
+std::istream& operator>>(std::istream& is, Passenger& entry);
+std::ostream& operator<<(std::ostream& os, const Passenger& entry);
 
 #endif

@@ -256,7 +256,7 @@ void modify_ticket(Reservation &res)
 
     int seat_index;
     std::vector<int> seat_indices;
-    for (int i = 0; i < res.passenger.number_of_tickets; i++)
+    for (int i = 0; i < res.passenger.number_of_tickets; ++i)
     {
         std::cout << "Seat index: ";
         std::cin >> seat_index;
@@ -269,6 +269,7 @@ void modify_ticket(Reservation &res)
         else
         {
             std::cout << "Not available" << std::endl;
+            i--;
         }
     }
     res.set_tickets(seat_indices);

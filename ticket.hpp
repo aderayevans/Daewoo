@@ -1,5 +1,5 @@
-#ifndef TICKET_H
-#define TICKET_H
+#ifndef TICKET_HPP
+#define TICKET_HPP
 
 class Ticket
 {

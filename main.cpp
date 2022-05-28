@@ -4,63 +4,23 @@
 #include <algorithm>
 #include <vector>
 
-#include "reservation.h"
-#include "bus.h"
-#include "passenger.h"
+#include "reservation.hpp"
+#include "bus.hpp"
+#include "passenger.hpp"
 #include "handlefile.cpp"
 
-#include "menuchoice.h"
-#include "menuchoice_modify.h"
+#include "menuchoice.hpp"
+#include "menuchoice_modify.hpp"
 
 
-menuChoice hashTheChoice(std::string choice)
-{
-    if (choice == "-q" || choice == "-quit")
-        return menuChoice::quit;
-    if (choice == "-h" || choice == "-help")
-        return menuChoice::help;
-    if (choice == "-i" || choice == "-init" || choice == "-make")
-        return menuChoice::make;
-    if (choice == "-m" || choice == "-modify")
-        return menuChoice::modify;
-    if (choice == "-c" || choice == "-cancel")
-        return menuChoice::cancel;
-    if (choice == "-s" || choice == "-save")
-        return menuChoice::save;
-    if (choice == "-b" || choice == "-blank")
-        return menuChoice::blank;
-    if (choice == "-sm" || choice == "-searchbyname")
-        return menuChoice::searchbyname;
-    if (choice == "-sd" || choice == "-searchbydate")
-        return menuChoice::searchbydate;
 
-    return menuChoice::wrong;
-}
-
-
-menuChoice_modify hashTheChoice_modify(std::string choice)
-{
-    if (choice == "-q" || choice == "-quit")
-        return menuChoice_modify::quit;
-    if (choice == "-h" || choice == "-help")
-        return menuChoice_modify::help;
-    if (choice == "-b" || choice == "-back" || choice == "-make")
-        return menuChoice_modify::back;
-    if (choice == "-p" || choice == "-passenger")
-        return menuChoice_modify::modify_pas;
-    if (choice == "-t" || choice == "-ticket")
-        return menuChoice_modify::modify_tic;
-
-    return menuChoice_modify::wrong;
-}
 
 // function prototypes
-void printMenu();
 void start();
 void read_file();
-void write_file();
+void write_file(WRITER_MODE mode=WRITER_MODE::APPEND);
 
-void __save__();
+void __print__();
 void __make_blank__();
 void make_res();
 void modify_res();
@@ -69,7 +29,6 @@ void searchByName();
 void searchByDate();
 
 void process_modify(Reservation &res);
-void printMenu_modify();
 void modify_passenger(Reservation &res);
 void modify_ticket(Reservation &res);
 
@@ -92,25 +51,6 @@ int main()
     return 0;
 }
 
-void printMenu() 
-{
-    std::cout << R"(
-**********                                              **********
-syntax: -[Function]
-
-[Function]:
-    [q] or [quit] to quit the application
-    [h] or [help] to print this menu
-    [i] or [init] or [make] to make a reservation
-    [m] or [modify] to modify a reservation
-    [c] or [cancel] to cancel a reservation
-    [s] or [save] to save
-    [b] or [blank] to make blank
-    [sm] or [searchbyname] to search reservations by name
-    [sd] or [searchbydate] to search reservations by date of travel 
-    
-)";
-}
 
 
 void start()
@@ -144,7 +84,10 @@ void start()
                 cancel_res();
                 break;
             case menuChoice::save:
-                __save__();
+                write_file();
+                break;
+            case menuChoice::print:
+                __print__();
                 break;
             case menuChoice::blank:
                 __make_blank__();
@@ -166,7 +109,7 @@ void start()
 void make_res()
 {
     Passenger passenger = Passenger();
-    passenger.init();
+    passenger.input();
     Reservation reservation = Reservation(passenger);
 
     std::vector<int> seat_indices;
@@ -178,13 +121,12 @@ void make_res()
     reservation.set_tickets(seat_indices);
     reservations.push_back(reservation);
 
-    bus.print();
-    for (auto res:reservations)
-        res.print();
+    __print__();
 }
 
 void modify_res()
 {
+    write_file(WRITER_MODE::CLEAR);
     std::string the_name;
     std::cout << "Passenger name? ";
     std::cin >> the_name;
@@ -200,6 +142,7 @@ void modify_res()
 
 void cancel_res()
 {
+    write_file(WRITER_MODE::CLEAR);
     std::string the_name;
     std::cout << "Passenger name? ";
     std::cin >> the_name;
@@ -217,10 +160,7 @@ void cancel_res()
         }
     }
 
-    bus.print();
-    for (auto res:reservations)
-        res.print();
-
+    __print__();
 }
 
 void searchByName()
@@ -248,47 +188,21 @@ void searchByDate()
     }
 }
 
-void read_file()
+void __print__()
 {
-    bus = HandleFile::read_file<Bus>(BUS_DATABASE);
-
-    reservations = HandleFile::read_file_multiple_obj<Reservation>(RES_DATABASE);
-
     bus.print();
-    std::cout << reservations.size() << std::endl;
+    std::cout << "Number of reservation: " << reservations.size() << std::endl;
     for (auto res:reservations)
-    {
         res.print();
-    }
-}
-
-void __save__()
-{
-    write_file();
 }
 
 void __make_blank__()
 {
     bus = Bus();
-    bus.init();
+    bus.init(10);
 
     reservations.clear();
-
-    write_file();
 }
-
-void write_file()
-{
-    HandleFile::write_file<Bus>(BUS_DATABASE, bus);
-
-    for (auto res:reservations)
-    {
-        HandleFile::write_file<Reservation>(RES_DATABASE, res, true);
-    }
-}
-
-
-
 
 void process_modify(Reservation &res)
 {
@@ -329,26 +243,9 @@ void process_modify(Reservation &res)
     printMenu();
 }
 
-
-void printMenu_modify() 
-{
-    std::cout << R"(
-**********               Modification Menu               **********
-syntax: -[Function]
-
-[Function]:
-    [q] or [quit] to quit the application
-    [h] or [help] to print this menu
-    [b] or [back] to go back the previous menu
-    [p] or [passenger] to modify passenger infomations
-    [t] or [ticket] to modify ticket (seat number)
-    
-)";
-}
-
 void modify_passenger(Reservation &res)
 {
-    res.passenger.init(false);
+    res.passenger.input(false);
     std::cout << "Modify passenger succeeded" << std::endl;
 }
 
@@ -377,4 +274,31 @@ void modify_ticket(Reservation &res)
     res.set_tickets(seat_indices);
 
     std::cout << "Modify ticket succeeded" << std::endl;
+}
+
+void read_file()
+{
+    std::cout << "Reading " << BUS_DATABASE << std::endl;
+    bus = HandleFile::read_file<Bus>(BUS_DATABASE);
+    // bus.init(10);
+
+    std::cout << "Reading " << RES_DATABASE << std::endl;
+    reservations = HandleFile::read_file_multiple_obj<Reservation>(RES_DATABASE);
+
+    __print__();
+}
+
+void write_file(WRITER_MODE mode)
+{
+    std::cout << "Writing to " << BUS_DATABASE << std::endl;
+    HandleFile::write_file<Bus>(BUS_DATABASE, bus, WRITER_MODE::TRUNCATE);
+
+    std::cout << "Writing to " << RES_DATABASE << std::endl;
+    if (reservations.size())
+        for (auto res:reservations)
+        {
+            HandleFile::write_file<Reservation>(RES_DATABASE, res, mode);
+        }
+    else
+        HandleFile::write_file<char>(RES_DATABASE, ' ', WRITER_MODE::CLEAR);
 }

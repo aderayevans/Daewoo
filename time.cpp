@@ -1,5 +1,8 @@
 #include <iostream>
-#include "time.h"
+#include <string>
+#include <regex>
+
+#include "time.hpp"
 
 Time::Time()
     : hour(0), minute(0)
@@ -11,16 +14,51 @@ Time::Time(int hour, int minute)
 {
 }
 
-void Time::fix_hour()
+void Time::input()
 {
-    if (hour < 0) hour = 0;
-    if (hour > 23) hour = 23;
+    std::string str;
+    std::regex regex_pattern("-?[0-9]+");
+    while (true)
+    {
+        std::cout << "Hour: ";
+        std::cin >> str;
+        if (std::regex_match(str, regex_pattern))
+        {
+            if (isHour(std::stod(str)))
+            {
+                hour = std::stod(str);
+                break;
+            }
+        }
+    }
+    while (true)
+    {
+        std::cout << "Minute: ";
+        std::cin >> str;
+        if (std::regex_match(str, regex_pattern))
+        {
+            if (isMinute(std::stod(str)))
+            {
+                minute = std::stod(str);
+                break;
+            }
+        }
+    }
 }
 
-void Time::fix_minute()
+bool Time::isHour(int hour)
 {
-    if (minute < 0) minute = 0;
-    if (minute > 59) minute = 59;
+    if (hour < 0) return false;
+    if (hour > 23) return false;
+    if (hour > 23) return false;
+    return true;
+}
+
+bool Time::isMinute(int minute)
+{
+    if (minute < 0) return false;
+    if (minute > 59) return false;
+    return true;
 }
 
 void Time::print()

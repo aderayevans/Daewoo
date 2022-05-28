@@ -1,5 +1,5 @@
 #include <iostream>
-#include "reservation.h"
+#include "reservation.hpp"
 
 Reservation::Reservation()
 {
@@ -12,6 +12,7 @@ Reservation::Reservation(Passenger passenger)
 
 void Reservation::set_tickets(std::vector<int> seat_indices)
 {
+    tickets.clear();
     for (int i = 0; i < seat_indices.size(); i++)
     {
         Ticket ticket;
@@ -55,6 +56,7 @@ std::ostream& operator<<(std::ostream& os, const Reservation& entry)
         os << *it;
         os << " ";
     }
+    // os << "\n";
     
     return os;
 }

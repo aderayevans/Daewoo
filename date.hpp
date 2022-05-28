@@ -1,5 +1,5 @@
-#ifndef DATE_H
-#define DATE_H
+#ifndef DATE_HPP
+#define DATE_HPP
 
 struct Date
 {
@@ -7,8 +7,9 @@ struct Date
     Date(int, int, int);
     bool operator == (Date& A) const;
     void input();
-    void fix_day();
-    void fix_month();
+    bool isDay(int);
+    bool isMonth(int);
+    bool isYear(int);
     void print();
     
 

@@ -1,33 +1,46 @@
 #include <iostream>
-#include "passenger.h"
+#include <regex>
+#include "passenger.hpp"
 
 Passenger::Passenger()
 {
 }
 
-void Passenger::init(bool change_number_of_tickets)
+void Passenger::input(bool change_number_of_tickets)
 {
-    // std::cout << "Name: ";
-    // std::cin >> name;
+    std::cout << "Name: ";
+    std::cin >> name;
     // std::cout << "departure_city: ";
     // std::cin >> departure_city;
     // std::cout << "destination_city: ";
     // std::cin >> destination_city;
-    // date_of_travel.init();
-    // time_of_travel.init();
+    // date_of_travel.input();
+    // time_of_travel.input();
+
+
+    std::string str;
+    std::regex regex_pattern("-?[0-9]+");
     if (change_number_of_tickets)
     {
-        // std::cout << "number_of_tickets: ";
-        // std::cin >> number_of_tickets;
+        while (true)
+        {
+            std::cout << "number_of_tickets: ";
+            std::cin >> str;
+            if (std::regex_match(str, regex_pattern))
+            {
+                number_of_tickets = std::stod(str);
+                break;
+            }
+        }
     }
 
 
-    name = "Test";
+    // name = "Test";
     departure_city = "TestDepart";
     destination_city = "TestDestinat";
     date_of_travel = Date(20, 11, 2022);
     time_of_travel = Time(10, 10);
-    number_of_tickets = 2;
+    // number_of_tickets = 2;
 }
 
 void Passenger::print()

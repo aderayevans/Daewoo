@@ -1,5 +1,5 @@
 #include <iostream>
-#include "seat.h"
+#include "seat.hpp"
 
 Seat::Seat() : taken(false)
 {

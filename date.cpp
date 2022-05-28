@@ -1,6 +1,8 @@
 #include <iostream>
 #include <algorithm>
-#include "date.h"
+#include <string>
+#include <regex>
+#include "date.hpp"
 
 Date::Date()
     : day(1), month(1), year(2022)
@@ -10,8 +12,6 @@ Date::Date()
 Date::Date(int day, int month, int year) 
     : day(day), month(month), year(year)
 {
-    fix_month();
-    fix_day();
 }
 
 bool Date::operator == (Date& A) const
@@ -19,37 +19,84 @@ bool Date::operator == (Date& A) const
     return (day == A.day) && (month == A.month) && (year == A.year);
 }
 
-void Date::fix_day()
+void Date::input()
 {
-    if (day < 1) day = 1;
+    std::string str;
+    std::regex regex_pattern("-?[0-9]+");
+
+    while (true)
+    {
+        std::cout << "Month: ";
+        std::cin >> str;
+        if (std::regex_match(str, regex_pattern))
+        {
+            if (isMonth(std::stod(str)))
+            {
+                month = std::stod(str);
+                break;
+            }
+        }
+    }
+    while (true)
+    {
+        std::cout << "Day: ";
+        std::cin >> str;
+        if (std::regex_match(str, regex_pattern))
+        {
+            if (isDay(std::stod(str)))
+            {
+                day = std::stod(str);
+                break;
+            }
+        }
+    }
+    while (true)
+    {
+        std::cout << "Year: ";
+        std::cin >> str;
+        if (std::regex_match(str, regex_pattern))
+        {
+            if (isYear(std::stod(str)))
+            {
+                year = std::stod(str);
+                break;
+            }
+        }
+    }
+}
+
+bool Date::isDay(int day)
+{
+    if (day < 1) return false;
 
     int month_have_31_days[] = {1, 3, 5, 7, 8, 10, 12};
 
     if (month == 2 && day > 29)
     {
-        day = 29;
+        return false;
     }
     if (std::count(std::begin(month_have_31_days), std::end(month_have_31_days), month) > 0)
     {
-        if (day > 31) day = 31;
+        if (day > 31) return false;
     }
     else 
     {
-        if (day > 30) day = 30;
+        if (day > 30) return false;
     }
+    return true;
 }
 
-void Date::fix_month()
+bool Date::isMonth(int month)
 {
-    if (month < 1) month = 1;
-    if (month > 12) month = 12;
+    if (month < 1) return false;
+    if (month > 12) return false;
+    return true;
 }
 
-void Date::input()
+bool Date::isYear(int year)
 {
-    std::cout << "Day: "; std::cin >> day;
-    std::cout << "Month: "; std::cin >> month;
-    std::cout << "Year: "; std::cin >> year;
+    if (year < 0) return false;
+    return true;
 }
 
 void Date::print()

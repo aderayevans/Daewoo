@@ -1,7 +1,7 @@
-#ifndef BUS_H
-#define BUS_H
+#ifndef BUS_HPP
+#define BUS_HPP
 
-#include "seat.h"
+#include "seat.hpp"
 #include <vector>
 #include <string>
 #include <fstream>
@@ -13,7 +13,7 @@ public:
 
     Bus(int seat_num);
 
-    void init();
+    void init(int);
 
     bool is_available();
 

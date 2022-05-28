@@ -1,5 +1,5 @@
 #include <iostream>
-#include "bus.h"
+#include "bus.hpp"
 
 Bus::Bus()
     : seat_num(10), non_taken_seat_num(10)
@@ -9,6 +9,17 @@ Bus::Bus()
 Bus::Bus(int seat_num)
     : seat_num(seat_num), non_taken_seat_num(seat_num)
 {   
+}
+
+void Bus::init(int seat_num)
+{
+    this->seat_num = seat_num;
+    this->non_taken_seat_num = non_taken_seat_num;
+    for (int i = 0; i < seat_num; ++i)
+    {
+        Seat seat = Seat(i);
+        seats.push_back(seat);
+    }
 }
 
 std::istream& operator>>(std::istream& is, Bus& entry)
@@ -37,24 +48,20 @@ std::ostream& operator<<(std::ostream& os, const Bus& entry)
     // std::cout << "<<" << entry.seat_num << "<<" << entry.non_taken_seat_num << std::endl;
     // std::cout << "<<" << entry.seats.size() << std::endl;
 
-    for (std::vector<Seat>::const_iterator it = entry.seats.cbegin();
-        it != entry.seats.cend(); ++it)
+    // for (std::vector<Seat>::const_iterator it = entry.seats.cbegin();
+    //     it != entry.seats.cend(); ++it)
+    // {
+    //     os << *it;
+    //     os << " ";
+    // }
+
+    for (int i = 0; i < entry.seat_num; ++i)
     {
-        os << *it;
+        os << entry.seats[i];
         os << " ";
     }
 
     return os;
-}
-
-
-void Bus::init()
-{
-    for (int i = 0; i < seat_num; i++)
-    {
-        Seat seat = Seat(i);
-        seats.push_back(seat);
-    }
 }
 
 bool Bus::is_available()

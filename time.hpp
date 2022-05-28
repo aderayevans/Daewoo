@@ -1,12 +1,13 @@
-#ifndef TIME_H
-#define TIME_H
+#ifndef TIME_HPP
+#define TIME_HPP
 
 struct Time
 {
     Time();
     Time(int, int);
-    void fix_hour();
-    void fix_minute();
+    void input();
+    bool isHour(int);
+    bool isMinute(int);
     void print();
 
     int hour;

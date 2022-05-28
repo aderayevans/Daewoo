@@ -1,5 +1,5 @@
-#ifndef SEAT_H
-#define SEAT_H
+#ifndef SEAT_HPP
+#define SEAT_HPP
 
 #include <fstream>
 

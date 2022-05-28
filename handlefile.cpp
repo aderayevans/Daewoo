@@ -1,9 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "handlefile.h"
-
-
+#include "handlefile.hpp"
 
 template <class OBJECTFILE>
 OBJECTFILE HandleFile::read_file(std::string filename)
@@ -35,27 +33,37 @@ std::vector<OBJECTFILE> HandleFile::read_file_multiple_obj(std::string filename)
     OBJECTFILE obj;
     while (ifs >> obj)
     {
-        obj.print();
         objs.push_back(obj);
     }
-    std::cout << objs.size() << std::endl;
     ifs.close();
     std::cout << "Read file succeeded!!!" << std::endl;
     return objs;
 }
     
 template <class OBJECTFILE>
-void HandleFile::write_file(std::string filename, OBJECTFILE obj, bool app)
+void HandleFile::write_file(std::string filename, OBJECTFILE obj, WRITER_MODE mode)
 {
     std::ofstream ofs;
-    if (app)
+    if (mode == WRITER_MODE::APPEND)
+    {
         ofs.open(filename, std::ios_base::app);
+        ofs << obj;
+        ofs.close();
+        std::cout << "Append file succeeded!!!" << std::endl;
+    }
+    else if (mode == WRITER_MODE::CLEAR)
+    {
+        ofs.open(filename, std::ios::out | std::ios::trunc);
+        ofs.close();
+        std::cout << "Clear file content succeeded!!!" << std::endl;
+    }
     else    
+    {
         ofs.open(filename);
+        ofs << obj;
+        ofs.close();
+        std::cout << "Write file succeeded!!!" << std::endl;
+    }
 
-    ofs << obj;
-    ofs.close();
-    std::cout << "Write file succeeded!!!" << std::endl;
-    // ofs.write((char*)&obj, sizeof(obj));
 }
 

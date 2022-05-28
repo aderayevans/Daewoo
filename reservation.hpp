@@ -1,8 +1,8 @@
-#ifndef RESERVATION_H
-#define RESERVATION_H
+#ifndef RESERVATION_HPP
+#define RESERVATION_HPP
 
-#include "ticket.h"
-#include "passenger.h"
+#include "ticket.hpp"
+#include "passenger.hpp"
 #include <vector>
 
 class Reservation

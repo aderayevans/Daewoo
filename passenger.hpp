@@ -1,18 +1,18 @@
-#ifndef PASSENGER_H
-#define PASSENGER_H
+#ifndef PASSENGER_HPP
+#define PASSENGER_HPP
 
  // printer.h code goes here
 
 
-#include "date.h"
-#include "time.h"
+#include "date.hpp"
+#include "time.hpp"
 
 class Passenger
 {
 public:
     Passenger();
 
-    void init(bool change__number_of_tickets=true);
+    void input(bool change__number_of_tickets=true);
 
     void print();
 
